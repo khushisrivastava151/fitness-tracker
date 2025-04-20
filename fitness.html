@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FitTrack Login</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f4f8;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 400px;
+      margin: 100px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+      color: #2c3e50;
+    }
+    label {
+      display: block;
+      margin: 10px 0 5px;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    .btn {
+      margin-top: 20px;
+      width: 100%;
+      background-color: #27ae60;
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .btn:hover {
+      background-color: #219150;
+    }
+    .hidden {
+      display: none;
+    }
+    .error {
+      color: red;
+      font-size: 0.9em;
+      text-align: center;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- LOGIN PAGE -->
+  <div class="container" id="loginPage">
+    <h2>FitTrack Login</h2>
+    <label for="username">Username:</label>
+    <input type="text" id="username" placeholder="Enter your username" />
+    <label for="password">Password:</label>
+    <input type="password" id="password" placeholder="Enter your password" />
+    <button class="btn" onclick="login()">Login</button>
+    <div class="error" id="loginError"></div>
+  </div>
+
+  <!-- MAIN APP PAGE -->
+  <div class="container hidden" id="mainApp">
+    <h1>FitTrack</h1>
+    <div class="section">
+      <h2>Daily Tracker</h2>
+      <label for="steps">Steps Walked:</label>
+      <input type="number" id="steps" placeholder="Enter number of steps" />
+
+      <label for="water">Water Intake (Litres):</label>
+      <input type="number" id="water" step="0.1" placeholder="e.g. 2.5" />
+
+      <label for="sleep">Sleep (Hours):</label>
+      <input type="number" id="sleep" placeholder="e.g. 7.5" />
+
+      <label for="calories">Calories Consumed:</label>
+      <input type="number" id="calories" placeholder="e.g. 1800" />
+    </div>
+
+    <div class="section">
+      <h2>User Preferences</h2>
+      <label for="goal">Fitness Goal:</label>
+      <select id="goal">
+        <option value="weight_loss">Weight Loss</option>
+        <option value="muscle_gain">Muscle Gain</option>
+        <option value="maintain">Maintain Health</option>
+      </select>
+    </div>
+
+    <button class="btn" onclick="showSummary()">Track & Suggest</button>
+
+    <div class="result" id="summary"></div>
+  </div>
+
+  <script>
+    // Hardcoded login (can be improved with backend)
+    const correctUsername = "user";
+    const correctPassword = "fit123";
+
+    function login() {
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const errorDiv = document.getElementById("loginError");
+
+      if (username === correctUsername && password === correctPassword) {
+        document.getElementById("loginPage").classList.add("hidden");
+        document.getElementById("mainApp").classList.remove("hidden");
+      } else {
+        errorDiv.textContent = "Invalid username or password!";
+      }
+    }
+
+    function showSummary() {
+      const steps = document.getElementById("steps").value;
+      const water = document.getElementById("water").value;
+      const sleep = document.getElementById("sleep").value;
+      const calories = document.getElementById("calories").value;
+      const goal = document.getElementById("goal").value;
+
+      let diet = "";
+      let exercise = "";
+
+      if (goal === "weight_loss") {
+        diet = "Low-carb diet rich in proteins, vegetables, and moderate fats. Calorie limit: 1500-1800 kcal.";
+        exercise = "30 mins of cardio, brisk walking, and strength training 3x/week.";
+      } else if (goal === "muscle_gain") {
+        diet = "High-protein meals with complex carbs and healthy fats. Calorie intake: 2500-3000 kcal.";
+        exercise = "Weight training 5x/week. Focus on squats, deadlifts, bench press.";
+      } else {
+        diet = "Balanced diet with fruits, vegetables, lean protein, and whole grains.";
+        exercise = "20-30 mins of light exercise daily. Walks, yoga, stretching.";
+      }
+
+      const result = `
+        <h3>Your Daily Summary</h3>
+        <p><strong>Steps Walked:</strong> ${steps}</p>
+        <p><strong>Water Intake:</strong> ${water} Litres</p>
+        <p><strong>Sleep:</strong> ${sleep} Hours</p>
+        <p><strong>Calories Consumed:</strong> ${calories} kcal</p>
+        <p><strong>Goal:</strong> ${goal.replace("_", " ")}</p>
+        <h4>Suggestions</h4>
+        <p><strong>Diet Plan:</strong> ${diet}</p>
+        <p><strong>Exercise Routine:</strong> ${exercise}</p>
+      `;
+      document.getElementById("summary").innerHTML = result;
+    }
+  </script>
+
+</body>
+</html>
